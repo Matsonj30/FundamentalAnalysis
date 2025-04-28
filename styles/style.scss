@@ -1,0 +1,103 @@
+//-------------------------------COLORS---------------------------------
+$primaryColor: #1C2336;
+$primaryDark:  #fafafa;
+$primaryLight: #FAFAFA;
+
+$secondaryColor: #1DA7E2;
+$secondaryColorDark: #1e86b3;
+$secondaryColorLight: #1ebbff;
+
+$accentColor: #644CA8;
+$accentColorDark: #e6242b;
+$accentColorLight: #77623b;;
+
+$blue: #45D0EE;
+$green: #A0C343;
+$pink: #FF497C;
+$orange: #FF8E4E;
+$yellow: #FDBA00;
+
+$white:  #FFFFFF;
+$black: #1B1B1B;
+//-------------------------------COLORS---------------------------------
+
+
+//-------------------------------FONTS---------------------------------
+
+@font-face{
+  font-family: "montserrat";
+  font-style: normal;
+  src: url(../fonts/Montserrat/Montserrat-SemiBold.ttf);
+  font-display: swap;
+}
+@font-face{
+    font-family: "semibold";
+    font-style: normal;
+    src: url(../fonts/Montserrat/Montserrat-SemiBold.ttf);
+    font-display: swap;
+  }
+  @font-face{
+    font-family: "bold";
+    font-style: normal;
+    src: url(../fonts/Montserrat/Montserrat-Bold.ttf);
+    font-display: swap;
+  }
+  
+
+//-------------------------------FONTS---------------------------------
+
+//-------------------------------MULTI PURPOSE CSS---------------------------------
+*{
+  margin: 0;   
+  padding: 0;
+  font-family: "montserrat";
+}
+.wrapper{
+  display: flex;
+  justify-content:  center;
+  
+}
+html{
+    height: 100%;
+}
+.primaryButton{
+    background-color: $secondaryColorDark;
+    border: none;
+    border-radius: 5px;
+    color: $white;
+    font-family: "semibold";
+    font-size: 20px;
+    padding: 12px 25px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.primaryButton:hover{
+    background-color: #19759c;
+}
+
+::selection {
+  background-color: $green; /* Set your desired highlight color */
+  color: $white; /* Set the text color */
+  
+}
+::-webkit-scrollbar {
+  width: 5px;
+
+}
+::-webkit-scrollbar-track {
+  background-color: $black;
+}
+::-webkit-scrollbar-thumb {
+
+  background-color: $pink;
+
+  height: 10px;
+}
+
+
+//-------------------------------MULTI PURPOSE CSS---------------------------------
+
+
+//-------------------------------IMPORTS---------------------------------
+@import "index/_index.scss"
+//-------------------------------IMPORTS---------------------------------

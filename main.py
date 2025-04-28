@@ -1,13 +1,16 @@
 import yahooquery as yq
-import pandas as pd
-from nicegui import ui
-
-ui.label('Hello NiceGUI!')
-
-ui.run()
+from flask import Flask, request, render_template
 
 
-# add a section to simply enter the ticker
-#Collect 10 years of data, put into nice table so we can compare
-# Add an option to use matplot do graph the last 10 years
-# tooltips to elaborate on what each section means -> red and green flags 
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('/financials')
+def financials(ticker):
+    ticker = request.form.get("ticker")
+    return render_template('financials.html', ticker=ticker)
+if __name__ == '__main__':
+    app.run(debug=True)
