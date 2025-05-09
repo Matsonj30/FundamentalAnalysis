@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KRWD Fundamentals Tracker</title>
     <script src="script.js"></script>
-    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="homeBody">
     <h1>Enter ticker below as seen on Yahoo Finance</h1>
     <!-- /Submit is the url it will post to -->
     <form action="/financials" method="post">
-        <input id="ticker" type="text" maxlength="6" placeholder="Enter Ticker Here" required>
+        <input id="ticker" name="ticker" type="text" maxlength="6" placeholder="Enter Ticker Here" required>
         <button class="primaryButton" type="submit">GET FINANCIALS</button>
     </form>
 </body>

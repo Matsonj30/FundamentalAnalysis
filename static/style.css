@@ -1,19 +1,19 @@
 @font-face {
   font-family: "montserrat";
   font-style: normal;
-  src: url(../fonts/Montserrat/Montserrat-SemiBold.ttf);
+  src: url(fonts/Montserrat/Montserrat-Regular.ttf);
   font-display: swap;
 }
 @font-face {
   font-family: "semibold";
   font-style: normal;
-  src: url(../fonts/Montserrat/Montserrat-SemiBold.ttf);
+  src: url(fonts/Montserrat/Montserrat-SemiBold.ttf);
   font-display: swap;
 }
 @font-face {
   font-family: "bold";
   font-style: normal;
-  src: url(../fonts/Montserrat/Montserrat-Bold.ttf);
+  src: url(fonts/Montserrat/Montserrat-Bold.ttf);
   font-display: swap;
 }
 * {
