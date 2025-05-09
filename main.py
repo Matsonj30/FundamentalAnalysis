@@ -11,7 +11,7 @@ def normalizeToMillion(value):
 
 
 def makeAPICall(ticker):
-    apiKey = "Ewo20G2Yib55qkuDxwi97LqSF1XOVByp"
+    apiKey = ""
     financialStatments = {}
     print("Getting Income Statment...")
     financialStatments["incomeStatement"] = requests.get(f"https://financialmodelingprep.com/stable/income-statement?symbol={ticker}&apikey={apiKey}").json()
