@@ -18,7 +18,7 @@ $orange: #FF8E4E;
 $yellow: #FDBA00;
 
 $white:  #FFFFFF;
-$black: #1B1B1B;
+$black: #242424;
 //-------------------------------COLORS---------------------------------
 
 
@@ -51,6 +51,7 @@ $black: #1B1B1B;
   margin: 0;   
   padding: 0;
   font-family: "montserrat";
+  color: #ffffff;
 }
 .wrapper{
   display: flex;
@@ -59,6 +60,7 @@ $black: #1B1B1B;
 }
 html{
     height: 100%;
+    background-color: $black;
 }
 .primaryButton{
     background-color: $secondaryColorDark;
@@ -99,5 +101,6 @@ html{
 
 
 //-------------------------------IMPORTS---------------------------------
-@import "index/_index.scss"
+@import "index/_index.scss";
+@import "financials/_financials.scss";
 //-------------------------------IMPORTS---------------------------------
