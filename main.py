@@ -5,6 +5,8 @@ import time
 import requests
 app = Flask(__name__)
 
+#HAVE IT SO WHEN WE HOVER A BOX, INSTEAD FO EXTENDING ITS WIDTH IT JUST OPENS A MINI WINDOW
+#LIKE ON TWITCH TITLES
 def normalizeToMillion(value):
     return 0
 
