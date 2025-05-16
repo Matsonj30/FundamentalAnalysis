@@ -8,10 +8,22 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Showing Financial Data For {{ticker}}</h1>
-    <div class="resourcesContainer">
+    <div class="flexbox">
+   <div class="resourcesContainer">
+        <h1>Showing Financial Data For {{ticker}}</h1>
+        <div class="resourcesTabs">
+             <div onclick="changeTabs('incomeStatement')" class="tab">
+                <b>Income Statement</b>
+            </div>
+             <div onclick="changeTabs('balanceSheet')" class="tab">
+                <b>Balance Sheet</b>
+            </div>
+            <div onclick="changeTabs('cashFlow')" class="tab">
+                <b>Cash Flow</b>
+            </div>
+        </div>
         <div class="resource">
-            <table class=incomeStatement>
+            <table class="incomeStatement statement">
                 <tbody>
                 <!-- get every row title -->
                 {% set keys = incomeStatements[0].keys() %} 
@@ -30,7 +42,49 @@
             
             </table>
         </div>
+        <div class="resource">
+            <table class="balanceSheet statement">
+                <tbody>
+                <!-- get every row title -->
+                {% set keys = balanceSheets[0].keys() %} 
+                    {% for key in keys %}
+                    <tr id="row-{{key}}">
+                        <td>{{ key }}</td>
+                        {% for statement in balanceSheets %}
+                            <td>{{statement [key]}}</td>
+                        {% endfor %}
+                        <td><button onclick="graphRow('row-{{key}}')">Graph</button></td>
+                    {% endfor %}
+               
+                    </tr>
+                
+                 </tbody>
+            
+            </table>
+        </div>
+        <div class="resource">
+            <table class="cashFlow statement">
+                <tbody>
+                <!-- get every row title -->
+                {% set keys = cashFlows[0].keys() %} 
+                    {% for key in keys %}
+                    <tr id="row-{{key}}">
+                        <td>{{ key }}</td>
+                        {% for statement in cashFlows %}
+                            <td>{{statement [key]}}</td>
+                        {% endfor %}
+                        <td><button onclick="graphRow('row-{{key}}')">Graph</button></td>
+                    {% endfor %}
+               
+                    </tr>
+                
+                 </tbody>
+            
+            </table>
+        </div>
     </div>
+    </div>
+ 
 </body>
  <script src="../static/scripts/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

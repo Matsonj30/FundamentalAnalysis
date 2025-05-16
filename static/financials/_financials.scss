@@ -1,6 +1,29 @@
 .resourcesContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    .resourcesTabs{
+        display: flex;
+        align-self: flex-start;
+        .tab{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 10px 20px;
+            background-color: #38a3a7;
+            transition: 0.5s;
+            cursor: pointer;
+            border: 1px solid $black;
+            border-bottom: none;
+        }
+        .tab:hover{
+            background-color: #2e878a;
+        }
+    }
     .resource{
-        .incomeStatement{
+        .incomeStatement, .statement{
             tbody{
                 tr{
                
@@ -8,7 +31,11 @@
                         font-size: 18px;
                         padding: 5px 5px;
                         border: 1px solid rgb(138, 138, 138);
-       
+                        max-width: 350px;
+                        overflow-x: hidden     
+                    }
+                    td:hover{
+                        max-width: unset;
                     }
                     td:nth-child(even){
                         background-color: rgb(72, 72, 72);
@@ -32,6 +59,9 @@
               
                 }
             }
+        }
+        .balanceSheet, .cashFlow{
+            display: none;
         }
     }
 }

@@ -33,6 +33,12 @@ html {
   background-color: #242424;
 }
 
+.flexbox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .primaryButton {
   background-color: #1e86b3;
   border: none;
@@ -95,23 +101,56 @@ html {
   margin-bottom: 15px;
   text-align: center;
   font-size: 20px;
+  color: #242424;
 }
 .homeBody form input:focus {
   outline: none;
 }
 
-.resourcesContainer .resource .incomeStatement tbody tr td {
+.resourcesContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.resourcesContainer .resourcesTabs {
+  display: flex;
+  align-self: flex-start;
+}
+.resourcesContainer .resourcesTabs .tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 10px 20px;
+  background-color: #38a3a7;
+  transition: 0.5s;
+  cursor: pointer;
+  border: 1px solid #242424;
+  border-bottom: none;
+}
+.resourcesContainer .resourcesTabs .tab:hover {
+  background-color: #2e878a;
+}
+.resourcesContainer .resource .incomeStatement tbody tr td, .resourcesContainer .resource .statement tbody tr td {
   font-size: 18px;
   padding: 5px 5px;
   border: 1px solid rgb(138, 138, 138);
+  max-width: 350px;
+  overflow-x: hidden;
 }
-.resourcesContainer .resource .incomeStatement tbody tr td:nth-child(even) {
+.resourcesContainer .resource .incomeStatement tbody tr td:hover, .resourcesContainer .resource .statement tbody tr td:hover {
+  max-width: unset;
+}
+.resourcesContainer .resource .incomeStatement tbody tr td:nth-child(even), .resourcesContainer .resource .statement tbody tr td:nth-child(even) {
   background-color: rgb(72, 72, 72);
 }
-.resourcesContainer .resource .incomeStatement tbody tr td:nth-child(odd) {
+.resourcesContainer .resource .incomeStatement tbody tr td:nth-child(odd), .resourcesContainer .resource .statement tbody tr td:nth-child(odd) {
   background-color: #242424;
 }
-.resourcesContainer .resource .incomeStatement tbody tr button {
+.resourcesContainer .resource .incomeStatement tbody tr button, .resourcesContainer .resource .statement tbody tr button {
   background-color: #A0C343;
   color: #FFFFFF;
   border: none;
@@ -120,6 +159,9 @@ html {
   font-family: "bold";
   cursor: pointer;
 }
-.resourcesContainer .resource .incomeStatement tbody tr button:hover {
+.resourcesContainer .resource .incomeStatement tbody tr button:hover, .resourcesContainer .resource .statement tbody tr button:hover {
   background-color: #89a738;
+}
+.resourcesContainer .resource .balanceSheet, .resourcesContainer .resource .cashFlow {
+  display: none;
 }/*# sourceMappingURL=style.css.map */
