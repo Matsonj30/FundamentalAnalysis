@@ -32,6 +32,7 @@ function graphRow(rowName){
        datesList.push(element.innerHTML)
     });
     Array.from(dataColumns).forEach(element => {
+      //  const raw = element.innerHTML.replace(/,/g, '');  // Remove commas
         const number = Number(element.innerHTML)
         if (!isNaN(number)){
             dataList.push(element.innerHTML)
@@ -58,6 +59,17 @@ function createChartContainer(datesList, values, rowName) {
           <title>${rowName} Chart</title>
           <link rel="stylesheet" href="/static/style.css">
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <style>
+      body {
+        background-color: white;
+        color: black;
+        font-family: sans-serif;
+        text-align: center;
+      }
+      canvas {
+        background-color: white;
+      }
+    </style>
       </head>
       <body>
         <h2>${rowName}</h2>

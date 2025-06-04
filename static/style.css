@@ -138,11 +138,8 @@ html {
   font-size: 18px;
   padding: 5px 5px;
   border: 1px solid rgb(138, 138, 138);
-  max-width: 350px;
+  max-width: 200px;
   overflow-x: hidden;
-}
-.resourcesContainer .resource .incomeStatement tbody tr td:hover, .resourcesContainer .resource .statement tbody tr td:hover {
-  max-width: unset;
 }
 .resourcesContainer .resource .incomeStatement tbody tr td:nth-child(even), .resourcesContainer .resource .statement tbody tr td:nth-child(even) {
   background-color: rgb(72, 72, 72);

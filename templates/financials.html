@@ -28,7 +28,7 @@
                 <!-- get every row title -->
                 {% set keys = incomeStatements[0].keys() %} 
                     {% for key in keys %}
-                    <tr id="row-{{key}}">
+                    <tr id="row-{{key}}" title="{{key}}">
                         <td>{{ key }}</td>
                         {% for statement in incomeStatements %}
                             <td>{{statement [key]}}</td>
@@ -48,7 +48,7 @@
                 <!-- get every row title -->
                 {% set keys = balanceSheets[0].keys() %} 
                     {% for key in keys %}
-                    <tr id="row-{{key}}">
+                    <tr id="row-{{key}}" title="{{key}}">
                         <td>{{ key }}</td>
                         {% for statement in balanceSheets %}
                             <td>{{statement [key]}}</td>
@@ -68,7 +68,7 @@
                 <!-- get every row title -->
                 {% set keys = cashFlows[0].keys() %} 
                     {% for key in keys %}
-                    <tr id="row-{{key}}">
+                    <tr id="row-{{key}}" title="{{key}}">
                         <td>{{ key }}</td>
                         {% for statement in cashFlows %}
                             <td>{{statement [key]}}</td>
