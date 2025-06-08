@@ -13,13 +13,16 @@
         <h1>Showing Financial Data For {{ticker}}</h1>
         <div class="resourcesTabs">
              <div onclick="changeTabs('incomeStatement')" class="tab">
-                <b    >Income Statement</b>
+                <b>Income Statement</b>
             </div>
              <div onclick="changeTabs('balanceSheet')" class="tab">
                 <b>Balance Sheet</b>
             </div>
             <div onclick="changeTabs('cashFlow')" class="tab">
                 <b>Cash Flow</b>
+            </div>
+            <div onclick="changeTabs('ratios')" class="tab">
+                <b>Ratios</b>
             </div>
         </div>
         <div class="resource">
@@ -82,6 +85,25 @@
             
             </table>
         </div>
+
+<div class="resource">
+  <table class="ratios statement">
+    <tbody>
+      {% for key, values in ratios.items() %}
+      <tr id="ratio-row-{{ key }}" title="{{ key }}">
+        <td>{{ key }}</td>
+        {% for value in values %}
+          <td>{{ value }}</td>
+        {% endfor %}
+        <td><button onclick="graphRow('ratio-row-{{ key }}')">Graph</button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
     </div>
     </div>
  

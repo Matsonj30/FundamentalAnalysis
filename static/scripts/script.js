@@ -14,6 +14,9 @@ function changeTabs(tabSelected){
     case "cashFlow":
       allStatements[2].style.display = "block"
       break;
+    case "ratios":
+      allStatements[3].style.display = "block"
+      break;
     default:
       allStatements[0].style.display = "block"
     break;

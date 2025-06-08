@@ -3,10 +3,13 @@ import os
 from flask import Flask, request, render_template
 import time
 import requests
+import math
+import ratios
 app = Flask(__name__)
 
 
-#next is notes that can save, and ratios
+#next is notes that can save
+#MAKE sure these ratios are the best ones for research? idk
 
 
 def cleanFinancialStatements(financialStatements):
@@ -28,9 +31,36 @@ def cleanFinancialStatements(financialStatements):
                 if type(annualDocument[entry]) == int:
                     scaledValue =  annualDocument[entry] / 1000000 #date seems to be a string so we should be okay
                     annualDocument[entry] = scaledValue
-                    #annualDocument[entry] = "{:,.0f}".format(scaledValue)
     return financialStatements
 
+def calculateRatios(financialStatements):
+    incomeStatements = financialStatements["incomeStatement"]
+    balanceSheets =  financialStatements["balancesheet"]
+    cashFlows = financialStatements["cashFlow"]
+
+    calculatedRatios = {}
+    #add the dates tab so we can keep track
+    calculatedRatios["date"] = [statement["date"] for statement in incomeStatements]
+    calculatedRatios["fiscalYear"] = [statement["fiscalYear"] for statement in incomeStatements]
+   
+    # Then add the actual ratio calculations
+    calculatedRatios.update({
+        "grossProfitMargin": ratios.grossProfitMargin(incomeStatements),
+        "SGA": ratios.SGA(incomeStatements),
+        "RD": ratios.RD(incomeStatements),
+        "depreciationAsPercent": ratios.depreciationAsPercent(incomeStatements, cashFlows),
+        "interestAsPercent": ratios.interestAsPercent(incomeStatements),
+        "netEarningsAsPercent": ratios.netEarningsAsPercent(incomeStatements),
+        "ROA": ratios.ROA(incomeStatements, balanceSheets),
+        "ROE": ratios.ROE(incomeStatements, balanceSheets),
+        "adjustedROE": ratios.adjustedROE(incomeStatements, balanceSheets),
+        "debtToEquity": ratios.debtToEquity(balanceSheets),
+        "currentRatio": ratios.currentRatio(balanceSheets),
+        "capExAsPercent": ratios.capExAsPercent(incomeStatements, cashFlows)
+    })
+  
+    #print(calculatedRatios)
+    return calculatedRatios
 
 def makeAPICall(ticker):
     load_dotenv()
@@ -45,7 +75,11 @@ def makeAPICall(ticker):
     print("Getting Cash Flow...")
     financialStatements["cashFlow"] = requests.get(f"https://financialmodelingprep.com/stable/cash-flow-statement?symbol={ticker}&apikey={apiKey}").json()
     
-    return cleanFinancialStatements(financialStatements)
+    ratiosToSubmit = calculateRatios(financialStatements)
+
+    return cleanFinancialStatements(financialStatements), ratiosToSubmit
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
@@ -57,15 +91,18 @@ def financials():
     if request.method == 'POST':
         ticker = request.form.get("ticker")
         print(ticker)
-        financialStatments = makeAPICall(ticker)
-        incomeStatements = financialStatments["incomeStatement"]
-        balanceSheets =  financialStatments["balancesheet"]
-        cashFlows = financialStatments["cashFlow"]
+        financialStatements, ratiosToSubmit = makeAPICall(ticker)
+        incomeStatements = financialStatements["incomeStatement"]
+        balanceSheets =  financialStatements["balancesheet"]
+        cashFlows = financialStatements["cashFlow"]
 
     return render_template('financials.html', 
                            ticker=ticker,
                            incomeStatements = incomeStatements,
                            balanceSheets = balanceSheets,
-                           cashFlows = cashFlows)
+                           cashFlows = cashFlows,
+                           ratios = ratiosToSubmit)
 if __name__ == '__main__':
     app.run(debug=True)
+
+
