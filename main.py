@@ -15,14 +15,15 @@ app = Flask(__name__)
 def cleanFinancialStatements(financialStatements):
     documentTypes = ["incomeStatement", "balancesheet", "cashFlow"]
     #useless columns to remove
-    columnsToDrop = ["symbol", "reportedCurrency", "cik", "filingDate", "acceptedDate", "period"]
+    columnsToDrop = ["symbol", "reportedCurrency", "cik", "filingDate", "acceptedDate", "period", "link", "finalLink"]
     #Get income sheet / balance sheet
     for documentType in documentTypes:
         #get a document for a year
         #we have to get it through key because each document type starts with "IncomeStatement" for example
         for annualDocument in financialStatements[documentType]:
             for column in columnsToDrop:
-                annualDocument.pop(column)
+                if(column in annualDocument):
+                  annualDocument.pop(column)
         
     #clean values and divide by 1000
     for documentType in documentTypes:
@@ -41,22 +42,31 @@ def calculateRatios(financialStatements):
     calculatedRatios = {}
     #add the dates tab so we can keep track
     calculatedRatios["date"] = [statement["date"] for statement in incomeStatements]
-    calculatedRatios["fiscalYear"] = [statement["fiscalYear"] for statement in incomeStatements]
+    calculatedRatios["fiscalYear"] = [statement["calendarYear"] for statement in incomeStatements]
    
     # Then add the actual ratio calculations
     calculatedRatios.update({
+        "Return On Invested Capital (ROIC)":ratios.ROIC(incomeStatements,balanceSheets),
+        "Net Earnings as % Of Revenue": ratios.netEarningsAsPercent(incomeStatements),
+        "Interest Coverage Ratio": ratios.interestCoverage(incomeStatements),
+        "Return on Assets (ROA)": ratios.ROA(incomeStatements, balanceSheets),
+        "Return on Equity (ROE)": ratios.ROE(incomeStatements, balanceSheets),
+
         "grossProfitMargin": ratios.grossProfitMargin(incomeStatements),
-        "SGA": ratios.SGA(incomeStatements),
-        "RD": ratios.RD(incomeStatements),
-        "depreciationAsPercent": ratios.depreciationAsPercent(incomeStatements, cashFlows),
-        "interestAsPercent": ratios.interestAsPercent(incomeStatements),
-        "netEarningsAsPercent": ratios.netEarningsAsPercent(incomeStatements),
-        "ROA": ratios.ROA(incomeStatements, balanceSheets),
-        "ROE": ratios.ROE(incomeStatements, balanceSheets),
-        "adjustedROE": ratios.adjustedROE(incomeStatements, balanceSheets),
-        "debtToEquity": ratios.debtToEquity(balanceSheets),
+        "Free Cash Flow Margin": ratios.freeCashFlowMargin(incomeStatements, cashFlows),
+        "Cash Conversion Ratio": ratios.cashConversionRatio(incomeStatements, cashFlows),
         "currentRatio": ratios.currentRatio(balanceSheets),
-        "capExAsPercent": ratios.capExAsPercent(incomeStatements, cashFlows)
+        "Debt to Shareholders' Equity Ratio": ratios.debtToEquity(balanceSheets),
+        "capExAsPercent": ratios.capExAsPercent(incomeStatements, cashFlows),
+        "SG&A as a % of Gross Profit": ratios.SGA(incomeStatements),
+        "RD": ratios.RD(incomeStatements),
+        "Depreciation as a % of Operating Profit": ratios.depreciationAsPercent(incomeStatements, cashFlows),
+        "Interest as % of Operating Income": ratios.interestAsPercent(incomeStatements),
+        "Adjusted Return on Equity": ratios.adjustedROE(incomeStatements, balanceSheets)
+ 
+
+       
+
     })
   
     #print(calculatedRatios)
@@ -67,22 +77,29 @@ def makeAPICall(ticker):
     apiKey = os.getenv("API_KEY")
     financialStatements = {}
     print("Getting Income Statment...")
-    financialStatements["incomeStatement"] = requests.get(f"https://financialmodelingprep.com/stable/income-statement?symbol={ticker}&apikey={apiKey}").json()
+    #Top one is stable not v3
+    #financialStatements["incomeStatement"] = requests.get(f"https://financialmodelingprep.com/stable/income-statement?symbol={ticker}&apikey={apiKey}").json()
+    financialStatements["incomeStatement"] = requests.get(f"https://financialmodelingprep.com/api/v3/income-statement/{ticker}?period=annual&limit=5&apikey={apiKey}").json()
+ 
     time.sleep(1)
     print("Getting Balance Sheet...")
-    financialStatements["balancesheet"] = requests.get(f"https://financialmodelingprep.com/stable/balance-sheet-statement?symbol={ticker}&apikey={apiKey}").json()
-    time.sleep(1)
+    #Top one is stable not v3
+    #financialStatements["balancesheet"] = requests.get(f"https://financialmodelingprep.com/stable/balance-sheet-statement?symbol={ticker}&apikey={apiKey}").json()
+    financialStatements["balancesheet"] = requests.get(f"https://financialmodelingprep.com/api/v3/balance-sheet-statement/{ticker}?period=annual&limit=5&apikey={apiKey}").json()
     print("Getting Cash Flow...")
-    financialStatements["cashFlow"] = requests.get(f"https://financialmodelingprep.com/stable/cash-flow-statement?symbol={ticker}&apikey={apiKey}").json()
-    
+    #Top one is stable not v3
+    #financialStatements["cashFlow"] = requests.get(f"https://financialmodelingprep.com/stable/cash-flow-statement?symbol={ticker}&apikey={apiKey}").json()
+    financialStatements["cashFlow"] = requests.get(f"https://financialmodelingprep.com/api/v3/cash-flow-statement/{ticker}?period=annual&limit=5&apikey={apiKey}").json()
     ratiosToSubmit = calculateRatios(financialStatements)
 
     return cleanFinancialStatements(financialStatements), ratiosToSubmit
 
 
+
+
+######################################################################
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
     return render_template('index.html')
 
 @app.route('/financials', methods=['GET', 'POST'])
@@ -102,6 +119,7 @@ def financials():
                            balanceSheets = balanceSheets,
                            cashFlows = cashFlows,
                            ratios = ratiosToSubmit)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
